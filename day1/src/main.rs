@@ -1,3 +1,3 @@
 fn main() {
-    unimplemented!();
+    let _input = include_str!("../input.txt");
 }
