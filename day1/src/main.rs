@@ -1,46 +1,20 @@
 fn scan_report(report: Vec<usize>) -> usize {
-    let mut count = 0;
-    let mut iter = report.iter().peekable();
-    while let Some(&depth) = iter.next() {
-        if iter.peek() > Some(&&depth) {
-            count += 1;
-        }
-    }
-    count
+    report.windows(2).filter(|window| &window[0] < &window[1]).count()
 }
 
 fn measure_of_three(report: Vec<usize>) -> usize {
-    let mut count = 0;
-    let mut current = 0;
-    for window in report.windows(3) {
-        let sum = window.iter().sum();
-
-        if current == 0 {
-            current = sum;
-            continue;
-        }
-
-        if sum > current {
-            count += 1;
-        }
-        current = sum;
-    }
-    count
+    let sums = report.windows(3).map(|w| w.iter().sum()).collect::<Vec<usize>>();
+    scan_report(sums)
 }
 
 fn main() {
-    let mut input: Vec<usize> = Vec::new();
-    for depth in include_str!("../input.txt").lines() {
-        input.push(depth.parse::<usize>().unwrap());
-    }
+    let mut input: Vec<usize> = include_str!("../input.txt").lines().map(|line| line.parse::<usize>().unwrap()).collect::<Vec<usize>>();
 
     println!("depth increased {}", scan_report(input.clone()));
 
     input.clear();
 
-    for depth in include_str!("../input2.txt").lines() {
-        input.push(depth.parse::<usize>().unwrap());
-    }
+    input = include_str!("../input2.txt").lines().map(|line| line.parse::<usize>().unwrap()).collect::<Vec<usize>>();
 
     println!("measure of three increased {}", measure_of_three(input));
 }
