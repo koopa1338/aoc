@@ -1,20 +1,32 @@
 fn scan_report(report: Vec<usize>) -> usize {
-    report.windows(2).filter(|window| &window[0] < &window[1]).count()
+    report
+        .windows(2)
+        .filter(|window| &window[0] < &window[1])
+        .count()
 }
 
 fn measure_of_three(report: Vec<usize>) -> usize {
-    let sums = report.windows(3).map(|w| w.iter().sum()).collect::<Vec<usize>>();
+    let sums = report
+        .windows(3)
+        .map(|w| w.iter().sum())
+        .collect::<Vec<usize>>();
     scan_report(sums)
 }
 
 fn main() {
-    let mut input: Vec<usize> = include_str!("../input.txt").lines().map(|line| line.parse::<usize>().unwrap()).collect::<Vec<usize>>();
+    let mut input: Vec<usize> = include_str!("../input.txt")
+        .lines()
+        .map(|line| line.parse::<usize>().unwrap())
+        .collect::<Vec<usize>>();
 
     println!("depth increased {}", scan_report(input.clone()));
 
     input.clear();
 
-    input = include_str!("../input2.txt").lines().map(|line| line.parse::<usize>().unwrap()).collect::<Vec<usize>>();
+    input = include_str!("../input2.txt")
+        .lines()
+        .map(|line| line.parse::<usize>().unwrap())
+        .collect::<Vec<usize>>();
 
     println!("measure of three increased {}", measure_of_three(input));
 }
