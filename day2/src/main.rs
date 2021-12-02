@@ -118,8 +118,7 @@ mod tests {
 
         let (horiz, depth) = calc_course_part_one(parsed);
 
-        assert_eq!(horiz, 15);
-        assert_eq!(depth, 10);
+        assert_eq!(horiz.mul(depth), 150);
     }
 
     #[test]
@@ -129,7 +128,6 @@ mod tests {
 
         let (horiz, depth) = calc_course_part_two(parsed);
 
-        assert_eq!(horiz, 15);
-        assert_eq!(depth, 60);
+        assert_eq!(horiz.mul(depth), 900);
     }
 }
