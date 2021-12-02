@@ -1,7 +1,7 @@
 fn scan_report(report: Vec<usize>) -> usize {
     report
         .windows(2)
-        .filter(|window| &window[0] < &window[1])
+        .filter(|window| window[0] < window[1])
         .count()
 }
 
