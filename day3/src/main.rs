@@ -25,13 +25,10 @@ fn get_most_and_least_bits(matrix: Vec<Vec<u32>>) -> (Vec<u32>, Vec<u32>) {
 
     for bit_line in matrix.iter() {
         let common_bit_ones = bit_line.iter().filter(|bit| **bit > 0).count() as u32;
-        if common_bit_ones >= bit_line.len() as u32 / 2 {
-            most_common_vec.push(1);
-            least_common_vec.push(0);
-        } else {
-            most_common_vec.push(0);
-            least_common_vec.push(1);
-        }
+        let threshold: f64 = bit_line.len() as f64 / 2 as f64;
+
+        most_common_vec.push((common_bit_ones >= threshold.ceil() as u32) as u32);
+        least_common_vec.push((common_bit_ones < threshold.ceil() as u32) as u32);
     }
 
     (most_common_vec, least_common_vec)
@@ -51,24 +48,36 @@ fn decode_part_two(matrix: Vec<Vec<u32>>) -> (usize, usize) {
     let bit_len = matrix.first().unwrap().len();
 
     for idx in 0..bit_len {
-        // println!("co: {:?}", &carbon);
-        let (most, _) = get_most_and_least_bits(matrix_transpose(oxygen.clone()));
-        let (_, least) = get_most_and_least_bits(matrix_transpose(carbon.clone()));
-        println!("idx: {}, most: {:?}, ox: {:?}", idx, most, &oxygen);
+        if oxygen.len() > 1 {
+            let most = get_most_and_least_bits(matrix_transpose(oxygen.clone()))
+                .0
+                .get(idx)
+                .unwrap()
+                .to_owned();
 
-        oxygen = oxygen
-            .into_iter()
-            .filter(|v| *v.get(idx).unwrap() == *most.get(idx).unwrap())
-            .collect();
-        carbon = carbon
-            .into_iter()
-            .filter(|v| *v.get(idx).unwrap() == *least.get(idx).unwrap())
-            .collect();
+            oxygen = oxygen
+                .into_iter()
+                .filter(|v| *v.get(idx).unwrap() == most)
+                .collect();
+        }
+
+        if carbon.len() > 1 {
+            let least = get_most_and_least_bits(matrix_transpose(carbon.clone()))
+                .1
+                .get(idx)
+                .unwrap()
+                .to_owned();
+            carbon = carbon
+                .into_iter()
+                .filter(|v| *v.get(idx).unwrap() == least)
+                .collect();
+        }
     }
 
     if oxygen.len() != 1 {
         panic!("There should only be one value left");
     }
+
     if carbon.len() != 1 {
         panic!("There should only be one value left");
     }
@@ -94,7 +103,7 @@ fn convert_bits_to_usize(bits: Vec<u32>) -> usize {
 fn main() {
     let input: Vec<Vec<u32>> = parse_input(include_str!("../input.txt"));
     println!("Part 1:");
-    let (gamma, epsilon) = decode_part_one(input);
+    let (gamma, epsilon) = decode_part_one(input.clone());
     let power_comsumption = gamma * epsilon;
     println!(
         "gamma: {}; epsilon: {}; power comsumption: {}",
@@ -102,6 +111,9 @@ fn main() {
     );
 
     println!("Part 2:");
+    let (oxygen, carbon) = decode_part_two(input);
+    println!("oxygen: {}; carbon: {}", oxygen, carbon);
+    println!("life support: {}", oxygen * carbon);
 }
 
 #[cfg(test)]
