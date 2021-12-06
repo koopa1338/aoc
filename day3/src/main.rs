@@ -122,36 +122,22 @@ mod tests {
 
     #[test]
     fn test_parse_input() {
-        let input: &str = r#"00100
-11110
-10110
-10111
-10101
-01111
-00111
-11100
-10000
-11001
-00010
-01010"#;
+        let input: &str = &[
+            "00100", "11110", "10110", "10111", "10101", "01111", "00111", "11100", "10000",
+            "11001", "00010", "01010",
+        ]
+        .join("\n");
         let parsed = parse_input(input);
         assert_eq!(parsed.len(), 12);
     }
 
     #[test]
     fn test_decode_part_one() {
-        let input: &str = r#"00100
-11110
-10110
-10111
-10101
-01111
-00111
-11100
-10000
-11001
-00010
-01010"#;
+        let input: &str = &[
+            "00100", "11110", "10110", "10111", "10101", "01111", "00111", "11100", "10000",
+            "11001", "00010", "01010",
+        ]
+        .join("\n");
         let parsed = parse_input(input);
         let (gamma, epsilon) = decode_part_one(parsed);
         assert_eq!(gamma, 22);
@@ -160,18 +146,11 @@ mod tests {
 
     #[test]
     fn test_decode_part_two() {
-        let input: &str = r#"00100
-11110
-10110
-10111
-10101
-01111
-00111
-11100
-10000
-11001
-00010
-01010"#;
+        let input: &str = &[
+            "00100", "11110", "10110", "10111", "10101", "01111", "00111", "11100", "10000",
+            "11001", "00010", "01010",
+        ]
+        .join("\n");
         let parsed = parse_input(input);
         let (oxygen, carbon) = decode_part_two(parsed);
         assert_eq!(oxygen, 23);
