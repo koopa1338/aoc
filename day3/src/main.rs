@@ -9,7 +9,7 @@ fn parse_input(input: &str) -> Vec<Vec<u32>> {
         .collect()
 }
 
-fn matrix_transpose(matrix: Vec<Vec<u32>>) -> Vec<Vec<u32>> {
+fn matrix_transpose(matrix: &Vec<Vec<u32>>) -> Vec<Vec<u32>> {
     let mut trans = vec![Vec::with_capacity(matrix.len()); matrix[0].len()];
     for r in matrix {
         for i in 0..r.len() {
@@ -35,7 +35,7 @@ fn get_most_and_least_bits(matrix: Vec<Vec<u32>>) -> (Vec<u32>, Vec<u32>) {
 }
 
 fn decode_part_one(matrix: Vec<Vec<u32>>) -> (usize, usize) {
-    let trans = matrix_transpose(matrix);
+    let trans = matrix_transpose(&matrix);
     let (most_common_vec, least_common_vec) = get_most_and_least_bits(trans);
     let most_common = convert_bits_to_usize(most_common_vec);
     let least_common = convert_bits_to_usize(least_common_vec);
@@ -49,7 +49,7 @@ fn decode_part_two(matrix: Vec<Vec<u32>>) -> (usize, usize) {
 
     for idx in 0..bit_len {
         if oxygen.len() > 1 {
-            let most = get_most_and_least_bits(matrix_transpose(oxygen.clone()))
+            let most = get_most_and_least_bits(matrix_transpose(&oxygen))
                 .0
                 .get(idx)
                 .unwrap()
@@ -62,7 +62,7 @@ fn decode_part_two(matrix: Vec<Vec<u32>>) -> (usize, usize) {
         }
 
         if carbon.len() > 1 {
-            let least = get_most_and_least_bits(matrix_transpose(carbon.clone()))
+            let least = get_most_and_least_bits(matrix_transpose(&carbon))
                 .1
                 .get(idx)
                 .unwrap()
