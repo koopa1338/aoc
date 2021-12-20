@@ -1,15 +1,57 @@
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 enum Direction {
     Horizontal,
     Vertical,
     Diagonal,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 struct Line {
     start: (u32, u32),
     end: (u32, u32),
     direction: Direction,
+}
+
+impl Line {
+    fn get_diagram_coords(&self, diagram: &mut Vec<Vec<usize>>) {
+        match self.direction {
+            Direction::Horizontal => {
+                let y = self.start.1;
+                let mut range = self.start.0..=self.end.0;
+                if self.start.0 > self.end.0 {
+                    range = self.end.0..=self.start.0;
+                }
+                for x in range {
+                    diagram[y as usize][x as usize] += 1;
+                }
+            }
+            Direction::Vertical => {
+                let x = self.start.0;
+                let mut range = self.start.1..=self.end.1;
+                if self.start.1 > self.end.1 {
+                    range = self.end.1..=self.start.1;
+                }
+                for y in range {
+                    diagram[y as usize][x as usize] += 1;
+                }
+            }
+            Direction::Diagonal => {
+                let mut range_x = self.start.0..=self.end.0;
+                if self.start.0 > self.end.0 {
+                    range_x = self.end.0..=self.start.0;
+                }
+                let mut range_y = self.start.1..=self.end.1;
+                if self.start.1 > self.end.1 {
+                    range_y = self.end.1..=self.start.1;
+                }
+                for (x,y) in range_x.into_iter().zip(range_y.into_iter()) {
+                    diagram[y as usize][x as usize] += 1;
+                }
+            },
+        }
+
+    }
+
 }
 
 const SIZE: usize = 1000;
@@ -59,45 +101,29 @@ fn part_one(lines: Vec<Line>) -> Result<usize, String> {
         })
         .collect::<Vec<Line>>();
     for line in vert_and_horiz_lines {
-        match line.direction {
-            Direction::Horizontal => {
-                let y = line.start.1;
-                let mut range = line.start.0..=line.end.0;
-                if line.start.0 > line.end.0 {
-                    range = line.end.0..=line.start.0;
-                }
-                for x in range {
-                    diagram[y as usize][x as usize] += 1;
-                }
-            }
-            Direction::Vertical => {
-                let x = line.start.0;
-                let mut range = line.start.1..=line.end.1;
-                if line.start.1 > line.end.1 {
-                    range = line.end.1..=line.start.1;
-                }
-                for y in range {
-                    diagram[y as usize][x as usize] += 1;
-                }
-            }
-            _ => continue,
-        }
+        line.get_diagram_coords(&mut diagram);
     }
     let danger_count = diagram.into_iter().flatten().filter(|d| *d >= 2).count();
     Ok(danger_count)
 }
 
-fn part_two() -> Result<(), String> {
-    Ok(())
+fn part_two(lines: Vec<Line>) -> Result<usize, String> {
+    let mut diagram = vec![vec![0; SIZE]; SIZE];
+    for line in lines {
+        line.get_diagram_coords(&mut diagram);
+    }
+    let danger_count = diagram.into_iter().flatten().filter(|d| *d >= 2).count();
+    Ok(danger_count)
 }
 
 fn main() {
     let lines = parse_input(include_str!("../input.txt")).unwrap();
 
     println!("Part 1:");
-    println!("Number of dangerous areas: {}", part_one(lines).unwrap());
+    println!("Number of dangerous areas: {}", part_one(lines.clone()).unwrap());
 
-    // println!("Part 2:");
+    println!("Part 2:");
+    println!("Number of dangerous areas: {}", part_two(lines).unwrap());
 }
 
 #[cfg(test)]
@@ -142,7 +168,22 @@ mod tests {
         assert_eq!(part_one(lines).unwrap(), 5);
     }
 
-    // #[test]
-    // fn test_part_two() {
-    // }
+    #[test]
+    fn test_part_two() {
+        let input = &[
+            "0,9 -> 5,9",
+            "8,0 -> 0,8",
+            "9,4 -> 3,4",
+            "2,2 -> 2,1",
+            "7,0 -> 7,4",
+            "6,4 -> 2,0",
+            "0,9 -> 2,9",
+            "3,4 -> 1,4",
+            "0,0 -> 8,8",
+            "5,5 -> 8,2",
+        ];
+        let input_string = input.join("\n");
+        let lines = parse_input(&input_string).unwrap();
+        assert_eq!(part_two(lines).unwrap(), 12);
+    }
 }
