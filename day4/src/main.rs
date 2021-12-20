@@ -37,9 +37,6 @@ impl Bingoboard {
     }
 
     fn score(&mut self) -> Result<u64, String> {
-        if self.winning_number.is_none() {
-            return Err(String::from("no winning number for this board."));
-        }
         let mut score: u64 = 0;
         for row in self.data.iter() {
             let row_score: u64 = row.iter().fold(0, |sum, elem| {
@@ -51,7 +48,11 @@ impl Bingoboard {
             score += row_score;
         }
 
-        Ok(score * self.winning_number.unwrap() as u64)
+        if let Some(wn) = self.winning_number {
+            return Ok(score * wn as u64);
+        }
+
+        unreachable!("Score coudn't be calculated for this board.");
     }
 
     fn matrix_transpose(&mut self) -> Vec<Vec<(u8, bool)>> {
@@ -136,7 +137,7 @@ fn part_two(game_numbers: &Vec<u8>, boards: &mut Vec<Bingoboard>) -> Result<u64,
     if !bingos.is_empty() {
         return Ok(bingos.pop_back().unwrap().clone().score()?);
     }
-    Err(String::from("Did not found any winning board!"))
+    unreachable!("Did not found any winning board!");
 }
 
 fn main() {
