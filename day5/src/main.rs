@@ -7,6 +7,15 @@ enum Direction {
     Diagonal,
 }
 
+impl Direction {
+    fn get_diagonal_iter(start: u32, end: u32) -> impl Iterator<Item = u32> {
+        if start < end {
+            return Either::Left(start..=end);
+        }
+        Either::Right((end..=start).rev())
+    }
+}
+
 #[derive(Debug, Clone)]
 struct Line {
     start: (u32, u32),
@@ -38,20 +47,13 @@ impl Line {
                 }
             }
             Direction::Diagonal => {
-                let iter_x = Self::get_diagonal_iter(self.start.0, self.end.0);
-                let iter_y = Self::get_diagonal_iter(self.start.1, self.end.1);
+                let iter_x = Direction::get_diagonal_iter(self.start.0, self.end.0);
+                let iter_y = Direction::get_diagonal_iter(self.start.1, self.end.1);
                 for (x, y) in iter_x.zip(iter_y) {
                     diagram[y as usize][x as usize] += 1;
                 }
             }
         }
-    }
-
-    fn get_diagonal_iter(start: u32, end: u32) -> impl Iterator<Item = u32> {
-        if start < end {
-            return Either::Left(start..=end);
-        }
-        Either::Right((end..=start).rev())
     }
 }
 
