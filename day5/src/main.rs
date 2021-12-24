@@ -1,3 +1,5 @@
+use itertools::Either;
+
 #[derive(Debug, Clone)]
 enum Direction {
     Horizontal,
@@ -36,22 +38,21 @@ impl Line {
                 }
             }
             Direction::Diagonal => {
-                let mut range_x = self.start.0..=self.end.0;
-                if self.start.0 > self.end.0 {
-                    range_x = self.end.0..=self.start.0;
-                }
-                let mut range_y = self.start.1..=self.end.1;
-                if self.start.1 > self.end.1 {
-                    range_y = self.end.1..=self.start.1;
-                }
-                for (x,y) in range_x.into_iter().zip(range_y.into_iter()) {
+                let iter_x = Self::get_diagonal_iter(self.start.0, self.end.0);
+                let iter_y = Self::get_diagonal_iter(self.start.1, self.end.1);
+                for (x, y) in iter_x.zip(iter_y) {
                     diagram[y as usize][x as usize] += 1;
                 }
-            },
+            }
         }
-
     }
 
+    fn get_diagonal_iter(start: u32, end: u32) -> impl Iterator<Item = u32> {
+        if start < end {
+            return Either::Left(start..=end);
+        }
+        Either::Right((end..=start).rev())
+    }
 }
 
 const SIZE: usize = 1000;
@@ -120,7 +121,10 @@ fn main() {
     let lines = parse_input(include_str!("../input.txt")).unwrap();
 
     println!("Part 1:");
-    println!("Number of dangerous areas: {}", part_one(lines.clone()).unwrap());
+    println!(
+        "Number of dangerous areas: {}",
+        part_one(lines.clone()).unwrap()
+    );
 
     println!("Part 2:");
     println!("Number of dangerous areas: {}", part_two(lines).unwrap());
