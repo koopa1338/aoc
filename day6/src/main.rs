@@ -31,6 +31,10 @@ fn part_one(fishes: &mut Vec<Lanternfish>, iterations: usize) -> usize {
     fishes.len()
 }
 
+fn part_two(fishes: &mut Vec<Lanternfish>, iterations: usize) -> u128 {
+    todo!();
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -50,16 +54,32 @@ mod tests {
 
         assert_eq!(part_one(&mut parsed, 18), 26);
     }
+
+    #[test]
+    fn test_part_two() {
+        let input = "3,4,3,1,2";
+        let mut parsed = parse_input(input);
+
+        assert_eq!(part_two(&mut parsed, 265), 26984457539);
+    }
 }
 
 fn main() {
     let mut fishes = parse_input(include_str!("../input.txt"));
-    let iterations = 80;
+    let mut fishes_part_two = fishes.clone();
+    let mut iterations = 80;
     println!("Part 1:");
     println!(
         "fishes after {} iterations: {}",
         iterations,
         part_one(&mut fishes, iterations)
     );
+
+    iterations = 256;
     println!("Part 2:");
+    println!(
+        "fishes after {} iterations: {}",
+        iterations,
+        part_two(&mut fishes_part_two, iterations)
+    );
 }
