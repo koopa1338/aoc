@@ -32,7 +32,20 @@ fn part_one(fishes: &mut Vec<Lanternfish>, iterations: usize) -> usize {
 }
 
 fn part_two(fishes: &mut Vec<Lanternfish>, iterations: usize) -> u128 {
-    todo!();
+    let mut state_slice: [u128; 10] = [0u128; 10];
+    for fish in fishes.iter() {
+        state_slice[fish.timer as usize] += 1;
+    }
+    for _ in 0..iterations {
+        state_slice[9] = state_slice[0];
+        for state in 1..=8 {
+            state_slice[state - 1] = state_slice[state];
+        }
+        state_slice[6] += state_slice[9];
+        state_slice[8] = state_slice[9];
+    }
+    state_slice[9] = 0;
+    state_slice.iter().sum()
 }
 
 #[cfg(test)]
@@ -60,7 +73,7 @@ mod tests {
         let input = "3,4,3,1,2";
         let mut parsed = parse_input(input);
 
-        assert_eq!(part_two(&mut parsed, 265), 26984457539);
+        assert_eq!(part_two(&mut parsed, 256), 26984457539);
     }
 }
 
