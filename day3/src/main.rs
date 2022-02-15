@@ -9,7 +9,7 @@ fn parse_input(input: &str) -> Vec<Vec<u32>> {
         .collect()
 }
 
-fn matrix_transpose(matrix: &Vec<Vec<u32>>) -> Vec<Vec<u32>> {
+fn matrix_transpose(matrix: &[Vec<u32>]) -> Vec<Vec<u32>> {
     let mut trans = vec![Vec::with_capacity(matrix.len()); matrix[0].len()];
     for r in matrix {
         for i in 0..r.len() {
@@ -25,7 +25,7 @@ fn get_most_and_least_bits(matrix: Vec<Vec<u32>>) -> (Vec<u32>, Vec<u32>) {
 
     for bit_line in matrix.iter() {
         let common_bit_ones = bit_line.iter().filter(|bit| **bit > 0).count() as u32;
-        let threshold: f64 = bit_line.len() as f64 / 2 as f64;
+        let threshold: f64 = bit_line.len() as f64 / 2f64;
 
         most_common_vec.push((common_bit_ones >= threshold.ceil() as u32) as u32);
         least_common_vec.push((common_bit_ones < threshold.ceil() as u32) as u32);

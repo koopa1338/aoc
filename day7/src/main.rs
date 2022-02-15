@@ -1,3 +1,4 @@
+
 fn parse_input(input: &str) -> Vec<usize> {
     input
         .trim()
@@ -9,7 +10,7 @@ fn parse_input(input: &str) -> Vec<usize> {
 }
 
 fn part_one(mut positions: Vec<usize>) -> usize {
-    positions.sort();
+    positions.sort_unstable();
     let len = positions.len();
     let idx = if let 0 = len % 2 {
         len / 2
@@ -25,6 +26,7 @@ fn part_one(mut positions: Vec<usize>) -> usize {
     })
 }
 
+#[allow(dead_code)]
 fn part_two(_positions: Vec<usize>) -> usize {
     unimplemented!();
 }

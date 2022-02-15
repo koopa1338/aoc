@@ -104,15 +104,15 @@ fn parse_input(input: &str) -> (Vec<u8>, Vec<Bingoboard>) {
     (game_numbers, bingoboards)
 }
 
-fn part_one(game_numbers: &Vec<u8>, boards: &mut Vec<Bingoboard>) -> Result<u64, String> {
-    for (idx, num) in game_numbers.into_iter().enumerate() {
+fn part_one(game_numbers: &[u8], boards: &mut Vec<Bingoboard>) -> Result<u64, String> {
+    for (idx, num) in game_numbers.iter().enumerate() {
         for board in boards.iter_mut() {
             board.change_state_by_number(*num);
             if idx >= 5 {
                 // bingo can only occure if we already had 5 numbers
                 if board.check_bingo() {
                     board.winning_number = Some(*num);
-                    return Ok(board.score()?);
+                    return board.score();
                 }
             }
         }
@@ -120,9 +120,9 @@ fn part_one(game_numbers: &Vec<u8>, boards: &mut Vec<Bingoboard>) -> Result<u64,
     Err(String::from("Something went wrong!"))
 }
 
-fn part_two(game_numbers: &Vec<u8>, boards: &mut Vec<Bingoboard>) -> Result<u64, String> {
+fn part_two(game_numbers: &[u8], boards: &mut Vec<Bingoboard>) -> Result<u64, String> {
     let mut bingos: VecDeque<Bingoboard> = VecDeque::new();
-    for (idx, num) in game_numbers.into_iter().enumerate() {
+    for (idx, num) in game_numbers.iter().enumerate() {
         for board in boards.iter_mut() {
             board.change_state_by_number(*num);
             if idx >= 5 {
@@ -135,7 +135,7 @@ fn part_two(game_numbers: &Vec<u8>, boards: &mut Vec<Bingoboard>) -> Result<u64,
         }
     }
     if !bingos.is_empty() {
-        return Ok(bingos.pop_back().unwrap().clone().score()?);
+        return bingos.pop_back().unwrap().score();
     }
     unreachable!("Did not found any winning board!");
 }

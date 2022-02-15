@@ -66,14 +66,14 @@ fn parse_input(input: &str) -> Result<Vec<Line>, String> {
         .map(|s| {
             let coords = s
                 .split(' ')
-                .filter(|elem| elem.contains(","))
+                .filter(|elem| elem.contains(','))
                 .collect::<Vec<&str>>();
             let start = coords[0]
-                .split(",")
+                .split(',')
                 .map(|c| c.parse::<u32>().unwrap())
                 .collect::<Vec<u32>>();
             let end = coords[1]
-                .split(",")
+                .split(',')
                 .map(|c| c.parse::<u32>().unwrap())
                 .collect::<Vec<u32>>();
 
@@ -98,10 +98,7 @@ fn part_one(lines: Vec<Line>) -> Result<usize, String> {
     let mut diagram = vec![vec![0; SIZE]; SIZE];
     let vert_and_horiz_lines = lines
         .into_iter()
-        .filter(|line| match line.direction {
-            Direction::Diagonal => false,
-            _ => true,
-        })
+        .filter(|line| !matches!(line.direction, Direction::Diagonal))
         .collect::<Vec<Line>>();
     for line in vert_and_horiz_lines {
         line.get_diagram_coords(&mut diagram);

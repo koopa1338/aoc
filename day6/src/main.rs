@@ -17,7 +17,7 @@ fn parse_input(input: &str) -> Vec<Lanternfish> {
 fn part_one(fishes: &mut Vec<Lanternfish>, iterations: usize) -> usize {
     for _ in 0..iterations {
         let mut new_fishes: Vec<Lanternfish> = Vec::new();
-        fishes.into_iter().for_each(|mut fish| match fish.timer {
+        fishes.iter_mut().for_each(|mut fish| match fish.timer {
             0 => {
                 fish.timer = 6;
                 new_fishes.push(Lanternfish { timer: 8 })
