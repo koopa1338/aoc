@@ -1,15 +1,15 @@
 
-fn parse_input(input: &str) -> Vec<usize> {
+fn parse_input(input: &str) -> Vec<i32> {
     input
         .trim()
         .split(',')
         .map(|s| {
-            s.parse::<usize>().unwrap()
+            s.parse::<i32>().unwrap()
         })
-        .collect::<Vec<usize>>()
+        .collect::<Vec<i32>>()
 }
 
-fn part_one(mut positions: Vec<usize>) -> usize {
+fn part_one(mut positions: Vec<i32>) -> i32 {
     positions.sort_unstable();
     let len = positions.len();
     let idx = if let 0 = len % 2 {
@@ -22,13 +22,19 @@ fn part_one(mut positions: Vec<usize>) -> usize {
 
     positions.iter().fold(0, |sum, val| {
         let distance = horiz as i32 - *val as i32;
-        sum + distance.abs() as usize
+        sum + distance.abs()
     })
 }
 
-#[allow(dead_code)]
-fn part_two(_positions: Vec<usize>) -> usize {
-    unimplemented!();
+fn gauss(n: i32) -> i32 {
+    n * (n + 1) / 2
+}
+
+fn part_two(positions: Vec<i32>) -> i32 {
+    let avg = positions.iter().sum::<i32>() / positions.len() as i32;
+    positions.iter().map(|pos| {
+        gauss((pos - avg).abs())
+    }).sum()
 }
 
 fn main() {
@@ -38,7 +44,7 @@ fn main() {
     println!("fuel needed: {}", part_one(data.clone()));
 
     println!("Part 2:");
-    println!("fuel needed: {}", part_one(data));
+    println!("fuel needed: {}", part_two(data));
 }
 
 #[cfg(test)]
@@ -62,12 +68,12 @@ mod tests {
         assert_eq!(37, fuel);
     }
 
-    /* #[test]
+    #[test]
     fn test_part_two() {
         let input = "16,1,2,0,4,2,7,1,2,14";
         let data = parse_input(input);
         let fuel = part_two(data);
 
-        assert_eq!(168, fuel);
-    } */
+        assert_eq!(170, fuel);
+    }
 }
