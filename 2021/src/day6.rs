@@ -48,6 +48,28 @@ fn part_two(fishes: &mut Vec<Lanternfish>, iterations: usize) -> u128 {
     state_slice.iter().sum()
 }
 
+pub fn run() {
+    let mut fishes = parse_input(include_str!("../input/day6/input.txt"));
+    let mut fishes_part_two = fishes.clone();
+    let mut iterations = 80;
+    println!("DAY 6:");
+    println!("Part 1:");
+    println!(
+        "fishes after {} iterations: {}",
+        iterations,
+        part_one(&mut fishes, iterations)
+    );
+
+    iterations = 256;
+    println!("Part 2:");
+    println!(
+        "fishes after {} iterations: {}",
+        iterations,
+        part_two(&mut fishes_part_two, iterations)
+    );
+    println!("");
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -75,24 +97,4 @@ mod tests {
 
         assert_eq!(part_two(&mut parsed, 256), 26984457539);
     }
-}
-
-fn main() {
-    let mut fishes = parse_input(include_str!("../input.txt"));
-    let mut fishes_part_two = fishes.clone();
-    let mut iterations = 80;
-    println!("Part 1:");
-    println!(
-        "fishes after {} iterations: {}",
-        iterations,
-        part_one(&mut fishes, iterations)
-    );
-
-    iterations = 256;
-    println!("Part 2:");
-    println!(
-        "fishes after {} iterations: {}",
-        iterations,
-        part_two(&mut fishes_part_two, iterations)
-    );
 }

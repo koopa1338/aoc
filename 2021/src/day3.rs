@@ -100,8 +100,10 @@ fn convert_bits_to_usize(bits: Vec<u32>) -> usize {
     .unwrap()
 }
 
-fn main() {
-    let input: Vec<Vec<u32>> = parse_input(include_str!("../input.txt"));
+pub fn run() {
+    let input: Vec<Vec<u32>> = parse_input(include_str!("../input/day3/input.txt"));
+
+    println!("DAY 3:");
     println!("Part 1:");
     let (gamma, epsilon) = decode_part_one(input.clone());
     let power_comsumption = gamma * epsilon;
@@ -114,6 +116,7 @@ fn main() {
     let (oxygen, carbon) = decode_part_two(input);
     println!("oxygen: {}; carbon: {}", oxygen, carbon);
     println!("life support: {}", oxygen * carbon);
+    println!("");
 }
 
 #[cfg(test)]
@@ -157,3 +160,4 @@ mod tests {
         assert_eq!(carbon, 10);
     }
 }
+

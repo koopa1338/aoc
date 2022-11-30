@@ -116,9 +116,10 @@ fn part_two(lines: Vec<Line>) -> Result<usize, String> {
     Ok(danger_count)
 }
 
-fn main() {
-    let lines = parse_input(include_str!("../input.txt")).unwrap();
+pub fn run() {
+    let lines = parse_input(include_str!("../input/day5/input.txt")).unwrap();
 
+    println!("DAY 5:");
     println!("Part 1:");
     println!(
         "Number of dangerous areas: {}",
@@ -127,6 +128,7 @@ fn main() {
 
     println!("Part 2:");
     println!("Number of dangerous areas: {}", part_two(lines).unwrap());
+    println!("");
 }
 
 #[cfg(test)]
@@ -190,3 +192,4 @@ mod tests {
         assert_eq!(part_two(lines).unwrap(), 12);
     }
 }
+
