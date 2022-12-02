@@ -60,13 +60,16 @@ impl Game {
 
     fn play_predicted(&mut self) -> Score {
         match (&self.opponent, &self.outcome) {
-            (Choice::Rock, Outcome::Win) => self.me = Choice::Paper,
-            (Choice::Paper, Outcome::Win) => self.me = Choice::Scissor,
-            (Choice::Scissor, Outcome::Win) => self.me = Choice::Rock,
+            (Choice::Rock, Outcome::Win) | (Choice::Scissor, Outcome::Lose) => {
+                self.me = Choice::Paper;
+            }
+            (Choice::Paper, Outcome::Win) | (Choice::Rock, Outcome::Lose) => {
+                self.me = Choice::Scissor;
+            }
+            (Choice::Scissor, Outcome::Win) | (Choice::Paper, Outcome::Lose) => {
+                self.me = Choice::Rock;
+            }
             (op, Outcome::Draw) => self.me = op.clone(),
-            (Choice::Rock, Outcome::Lose) => self.me = Choice::Scissor,
-            (Choice::Paper, Outcome::Lose) => self.me = Choice::Rock,
-            (Choice::Scissor, Outcome::Lose) => self.me = Choice::Paper,
         }
 
         self.clone().play()
