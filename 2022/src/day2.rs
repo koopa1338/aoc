@@ -77,7 +77,7 @@ impl Game {
     fn score(&self) -> Score {
         self.outcome
             .clone()
-            .and_then(|outcome| Some(self.me.clone() as usize + outcome as usize))
+            .map(|outcome| self.me.clone() as usize + outcome as usize)
             .expect("could not calculate score")
     }
 }
