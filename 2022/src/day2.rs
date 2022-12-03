@@ -79,11 +79,10 @@ impl Game {
     }
 
     fn score(&self) -> Score {
-        if let Some(outcome) = self.outcome.clone() {
-            self.me.clone() as usize + outcome as usize
-        } else {
-            unreachable!();
-        }
+        self.outcome
+            .clone()
+            .and_then(|outcome| Some(self.me.clone() as usize + outcome as usize))
+            .expect("could not calculate score")
     }
 }
 
