@@ -44,7 +44,7 @@ struct Game {
 type Score = usize;
 
 impl Game {
-    fn play(&mut self) -> Score {
+    fn play(&mut self) {
         self.outcome = match (&self.me, &self.opponent) {
             (Choice::Rock, Choice::Scissor)
             | (Choice::Paper, Choice::Rock)
@@ -56,11 +56,9 @@ impl Game {
             | (Choice::Paper, Choice::Paper)
             | (Choice::Scissor, Choice::Scissor) => Some(Outcome::Draw),
         };
-
-        self.score()
     }
 
-    fn play_predicted(&mut self) -> Score {
+    fn play_predicted(&mut self) {
         self.me = match (&self.opponent, &self.outcome) {
             (Choice::Rock, Some(Outcome::Win)) | (Choice::Scissor, Some(Outcome::Lose)) => {
                 Choice::Paper
@@ -74,8 +72,6 @@ impl Game {
             (op, Some(Outcome::Draw)) => op.clone(),
             _ => unreachable!(),
         };
-
-        self.score()
     }
 
     fn score(&self) -> Score {
@@ -109,7 +105,8 @@ fn part_one(input: &str) -> usize {
         .into_iter()
         .map(|line| {
             let mut game: Game = line.trim().into();
-            game.play()
+            game.play();
+            game.score()
         })
         .sum()
 }
@@ -120,7 +117,8 @@ fn part_two(input: &str) -> usize {
         .into_iter()
         .map(|line| {
             let mut game: Game = line.trim().into();
-            game.play_predicted()
+            game.play_predicted();
+            game.score()
         })
         .sum()
 }
