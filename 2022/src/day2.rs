@@ -38,41 +38,52 @@ impl From<&str> for Outcome {
 struct Game {
     opponent: Choice,
     me: Choice,
-    outcome: Outcome,
+    outcome: Option<Outcome>,
 }
 
 type Score = usize;
 
 impl Game {
-    fn play(self) -> Score {
-        match (self.me, self.opponent) {
-            (guess @ Choice::Rock, Choice::Scissor)
-            | (guess @ Choice::Paper, Choice::Rock)
-            | (guess @ Choice::Scissor, Choice::Paper) => guess as Score + Outcome::Win as Score,
-            (guess @ Choice::Rock, Choice::Paper)
-            | (guess @ Choice::Paper, Choice::Scissor)
-            | (guess @ Choice::Scissor, Choice::Rock) => guess as Score + Outcome::Lose as Score,
-            (guess @ Choice::Rock, Choice::Rock)
-            | (guess @ Choice::Paper, Choice::Paper)
-            | (guess @ Choice::Scissor, Choice::Scissor) => guess as Score + Outcome::Draw as Score,
-        }
+    fn play(&mut self) -> Score {
+        self.outcome = match (&self.me, &self.opponent) {
+            (Choice::Rock, Choice::Scissor)
+            | (Choice::Paper, Choice::Rock)
+            | (Choice::Scissor, Choice::Paper) => Some(Outcome::Win),
+            (Choice::Rock, Choice::Paper)
+            | (Choice::Paper, Choice::Scissor)
+            | (Choice::Scissor, Choice::Rock) => Some(Outcome::Lose),
+            (Choice::Rock, Choice::Rock)
+            | (Choice::Paper, Choice::Paper)
+            | (Choice::Scissor, Choice::Scissor) => Some(Outcome::Draw),
+        };
+
+        self.score()
     }
 
     fn play_predicted(&mut self) -> Score {
-        match (&self.opponent, &self.outcome) {
-            (Choice::Rock, Outcome::Win) | (Choice::Scissor, Outcome::Lose) => {
-                self.me = Choice::Paper;
+        self.me = match (&self.opponent, &self.outcome) {
+            (Choice::Rock, Some(Outcome::Win)) | (Choice::Scissor, Some(Outcome::Lose)) => {
+                Choice::Paper
             }
-            (Choice::Paper, Outcome::Win) | (Choice::Rock, Outcome::Lose) => {
-                self.me = Choice::Scissor;
+            (Choice::Paper, Some(Outcome::Win)) | (Choice::Rock, Some(Outcome::Lose)) => {
+                Choice::Scissor
             }
-            (Choice::Scissor, Outcome::Win) | (Choice::Paper, Outcome::Lose) => {
-                self.me = Choice::Rock;
+            (Choice::Scissor, Some(Outcome::Win)) | (Choice::Paper, Some(Outcome::Lose)) => {
+                Choice::Rock
             }
-            (op, Outcome::Draw) => self.me = op.clone(),
-        }
+            (op, Some(Outcome::Draw)) => op.clone(),
+            _ => unreachable!(),
+        };
 
-        self.clone().play()
+        self.score()
+    }
+
+    fn score(&self) -> Score {
+        if let Some(outcome) = self.outcome.clone() {
+            self.me.clone() as usize + outcome as usize
+        } else {
+            unreachable!();
+        }
     }
 }
 
@@ -83,7 +94,7 @@ impl From<&str> for Game {
         let opponent: Choice = guesses.next().unwrap().into();
         let tmp = guesses.next().unwrap();
         let me: Choice = tmp.into();
-        let outcome: Outcome = tmp.into();
+        let outcome: Option<Outcome> = Some(tmp.into());
 
         Self {
             opponent,
@@ -98,7 +109,7 @@ fn part_one(input: &str) -> usize {
         .lines()
         .into_iter()
         .map(|line| {
-            let game: Game = line.trim().into();
+            let mut game: Game = line.trim().into();
             game.play()
         })
         .sum()
@@ -120,10 +131,10 @@ pub fn run() {
 
     println!("DAY 2:");
     println!("Part 1:");
-    println!("{}", part_one(input));
+    println!("Score: {}", part_one(input));
 
     println!("Part 2:");
-    println!("{}", part_two(input));
+    println!("Score: {}", part_two(input));
     println!();
 }
 
