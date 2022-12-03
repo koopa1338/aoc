@@ -1,5 +1,5 @@
 fn get_priority(c: char) -> usize {
-    let offset = if c.is_lowercase() { 96 } else { 38 };
+    let offset = if c.is_ascii_lowercase() { 96 } else { 38 };
     (c as u8 - offset) as usize
 }
 fn part_one(input: &str) -> usize {
