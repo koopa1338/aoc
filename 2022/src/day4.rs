@@ -1,20 +1,6 @@
 fn part_one(input: &str) -> usize {
-    input
-        .lines()
-        .map(|line| {
-            let (first, second) = line.split_once(',').unwrap();
-            let ((first_low, first_high), (second_low, second_high)) = (
-                first.split_once('-').unwrap(),
-                second.split_once('-').unwrap(),
-            );
-
-            (
-                first_low.parse::<u8>().unwrap(),
-                first_high.parse::<u8>().unwrap(),
-                second_low.parse::<u8>().unwrap(),
-                second_high.parse::<u8>().unwrap(),
-            )
-        })
+    parse_input(input)
+        .iter()
         .filter(|(first_low, first_high, second_low, second_high)| {
             (first_low >= second_low && first_high <= second_high)
                 || (first_low <= second_low && first_high >= second_high)
@@ -23,6 +9,18 @@ fn part_one(input: &str) -> usize {
 }
 
 fn part_two(input: &str) -> usize {
+    parse_input(input)
+        .iter()
+        .filter(|(first_low, first_high, second_low, second_high)| {
+            (first_low >= second_low && first_low <= second_high)
+                || (first_high >= second_low && first_high <= second_high)
+                || (first_low <= second_low && first_high >= second_low)
+                || (first_low <= second_high && first_high >= second_high)
+        })
+        .count()
+}
+
+fn parse_input(input: &str) -> Vec<(u8, u8, u8, u8)> {
     input
         .lines()
         .map(|line| {
@@ -39,13 +37,7 @@ fn part_two(input: &str) -> usize {
                 second_high.parse::<u8>().unwrap(),
             )
         })
-        .filter(|(first_low, first_high, second_low, second_high)| {
-            (first_low >= second_low && first_low <= second_high)
-                || (first_high >= second_low && first_high <= second_high)
-                || (first_low <= second_low && first_high >= second_low)
-                || (first_low <= second_high && first_high >= second_high)
-        })
-        .count()
+        .collect()
 }
 
 pub fn run() {
