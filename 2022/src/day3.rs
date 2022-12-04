@@ -2,6 +2,7 @@ fn get_priority(c: char) -> usize {
     let offset = if c.is_ascii_lowercase() { 96 } else { 38 };
     (c as u8 - offset) as usize
 }
+
 fn part_one(input: &str) -> usize {
     input
         .lines()
@@ -25,12 +26,7 @@ fn part_two(input: &str) -> usize {
         .map(|group| {
             let rucksacks = group
                 .iter()
-                .map(|items| {
-                    items
-                        .chars()
-                        .map(get_priority)
-                        .collect::<Vec<usize>>()
-                })
+                .map(|items| items.chars().map(get_priority).collect::<Vec<usize>>())
                 .collect::<Vec<Vec<usize>>>();
             let mut p = 0;
             for prio in 1..=52 {
@@ -47,7 +43,7 @@ fn part_two(input: &str) -> usize {
 pub fn run() {
     let input = include_str!("../input/day3/input.txt");
 
-    println!("DAY 2:");
+    println!("DAY 3:");
     println!("Part 1:");
     println!("{}", part_one(input));
 
