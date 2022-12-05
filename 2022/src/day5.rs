@@ -12,6 +12,41 @@ struct ProcedureStep {
     to: usize,
 }
 
+impl From<&str> for Crates {
+    fn from(input: &str) -> Self {
+        let mut crates_iter = input.lines().rev();
+        let dim = crates_iter.next().unwrap().split_whitespace().count();
+
+        let mut stacks = vec![Vec::new(); dim as usize];
+        crates_iter.for_each(|line| {
+            line.chars()
+                .skip(1)
+                .step_by(4)
+                .enumerate()
+                .for_each(|(idx, c)| {
+                    if !c.is_whitespace() {
+                        stacks[idx].push(c);
+                    }
+                });
+        });
+
+        Self { stacks }
+    }
+}
+
+impl From<&str> for ProcedureStep {
+    fn from(input: &str) -> Self {
+        match input.split_whitespace().collect::<Vec<_>>().as_slice() {
+            ["move", count, "from", from, "to", to] => Self {
+                count: count.parse::<usize>().unwrap(),
+                from: from.parse::<usize>().unwrap().checked_sub(1).unwrap(),
+                to: to.parse::<usize>().unwrap().checked_sub(1).unwrap(),
+            },
+            _ => unreachable!(),
+        }
+    }
+}
+
 fn part_one(input: &str) -> String {
     let (mut crates, procedures) = parse_input(input);
 
@@ -56,7 +91,7 @@ fn parse_input(input: &str) -> (Crates, Vec<ProcedureStep>) {
     let dim = crates_iter.next().unwrap().split_whitespace().count();
 
     let mut stacks = vec![Vec::new(); dim as usize];
-    crates_iter.for_each(|line| {
+    for line in crates_iter {
         line.chars()
             .skip(1)
             .step_by(4)
@@ -66,22 +101,13 @@ fn parse_input(input: &str) -> (Crates, Vec<ProcedureStep>) {
                     stacks[idx].push(c);
                 }
             });
-    });
+    }
 
-    let crates = Crates { stacks };
+    let crates = Crates::from(crates_str);
     let procedures = procedures_str
         .trim()
         .lines()
-        .map(
-            |line| match line.split_whitespace().collect::<Vec<_>>().as_slice() {
-                ["move", count, "from", from, "to", to] => ProcedureStep {
-                    count: count.parse::<usize>().unwrap(),
-                    from: from.parse::<usize>().unwrap().checked_sub(1).unwrap(),
-                    to: to.parse::<usize>().unwrap().checked_sub(1).unwrap(),
-                },
-                _ => unreachable!(),
-            },
-        )
+        .map(ProcedureStep::from)
         .collect::<Vec<_>>();
 
     (crates, procedures)
