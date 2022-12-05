@@ -1,15 +1,18 @@
 use std::collections::VecDeque;
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 struct Crates {
     stacks: Vec<Vec<char>>,
 }
 
-#[derive(Debug)]
-struct ProcedureStep {
-    count: usize,
-    from: usize,
-    to: usize,
+impl Crates {
+    fn get_crates_top(&mut self) -> String {
+        self.clone()
+            .stacks
+            .into_iter()
+            .filter_map(|mut stack| stack.pop())
+            .collect()
+    }
 }
 
 impl From<&str> for Crates {
@@ -32,6 +35,13 @@ impl From<&str> for Crates {
 
         Self { stacks }
     }
+}
+
+#[derive(Debug)]
+struct ProcedureStep {
+    count: usize,
+    from: usize,
+    to: usize,
 }
 
 impl From<&str> for ProcedureStep {
@@ -58,11 +68,7 @@ fn part_one(input: &str) -> String {
         }
     }
 
-    crates
-        .stacks
-        .into_iter()
-        .filter_map(|mut stack| stack.pop())
-        .collect()
+    crates.get_crates_top()
 }
 
 fn part_two(input: &str) -> String {
@@ -78,11 +84,7 @@ fn part_two(input: &str) -> String {
         crates.stacks[step.to].extend(tmp);
     }
 
-    crates
-        .stacks
-        .into_iter()
-        .filter_map(|mut stack| stack.pop())
-        .collect()
+    crates.get_crates_top()
 }
 
 fn parse_input(input: &str) -> (Crates, Vec<ProcedureStep>) {
