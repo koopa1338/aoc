@@ -1,3 +1,5 @@
+use std::collections::VecDeque;
+
 #[derive(Debug)]
 struct Crates {
     stacks: Vec<Vec<char>>,
@@ -32,14 +34,13 @@ fn part_two(input: &str) -> String {
     let (mut crates, procedures) = parse_input(input);
 
     for step in procedures {
-        let mut tmp = Vec::new();
+        let mut tmp = VecDeque::new();
         for _ in 0..step.count {
             if let Some(c) = crates.stacks[step.from].pop() {
-                tmp.push(c);
+                tmp.push_front(c);
             }
         }
-        tmp.reverse();
-        crates.stacks[step.to].append(&mut tmp);
+        crates.stacks[step.to].extend(tmp.iter());
     }
 
     crates
