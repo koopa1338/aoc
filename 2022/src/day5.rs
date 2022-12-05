@@ -40,7 +40,7 @@ fn part_two(input: &str) -> String {
                 tmp.push_front(c);
             }
         }
-        crates.stacks[step.to].extend(tmp.iter());
+        crates.stacks[step.to].extend(tmp);
     }
 
     crates
