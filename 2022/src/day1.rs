@@ -1,3 +1,4 @@
+use aoc2022::timing;
 type Calories = usize;
 
 fn part_one(input: &str) -> Calories {
@@ -38,12 +39,8 @@ pub fn run() {
     let input = include_str!("../input/day1/input.txt");
 
     println!("DAY 1:");
-    println!("Part 1:");
-    println!("Max: {}", part_one(input));
-
-    println!("Part 2:");
-    println!("Total of top 3: {}", part_two(input));
-    println!();
+    timing(|| part_one(input), 1);
+    timing(|| part_two(input), 2);
 }
 
 #[cfg(test)]

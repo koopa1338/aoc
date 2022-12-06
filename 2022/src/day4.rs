@@ -1,3 +1,5 @@
+use aoc2022::timing;
+
 fn part_one(input: &str) -> usize {
     parse_input(input)
         .iter()
@@ -44,12 +46,8 @@ pub fn run() {
     let input = include_str!("../input/day4/input.txt");
 
     println!("DAY 4:");
-    println!("Part 1:");
-    println!("{}", part_one(input));
-
-    println!("Part 2:");
-    println!("{}", part_two(input));
-    println!();
+    timing(|| part_one(input), 1);
+    timing(|| part_two(input), 2);
 }
 
 #[cfg(test)]

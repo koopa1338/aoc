@@ -1,3 +1,4 @@
+use aoc2022::timing;
 use std::collections::VecDeque;
 
 #[derive(Clone, Debug)]
@@ -115,12 +116,8 @@ pub fn run() {
     let input = include_str!("../input/day5/input.txt");
 
     println!("DAY 5:");
-    println!("Part 1:");
-    println!("{}", part_one(input));
-
-    println!("Part 2:");
-    println!("{}", part_two(input));
-    println!();
+    timing(|| part_one(input), 1);
+    timing(|| part_two(input), 2);
 }
 
 #[cfg(test)]
