@@ -1,4 +1,5 @@
 use aoc2022::timing;
+use rstest::rstest;
 
 fn find_packet(bytes: &[u8], marker_size: usize) -> usize {
     bytes
@@ -36,39 +37,23 @@ pub fn run() {
 mod test {
     use super::*;
 
-    #[test]
-    fn test_part_one() {
-        let mut stream = "mjqjpqmgbljsphdztnvjfqwrcgsmlb";
-        assert_eq!(7, part_one(stream));
-
-        stream = "bvwbjplbgvbhsrlpgdmjqwftvncz";
-        assert_eq!(5, part_one(stream));
-
-        stream = "nppdvjthqldpwncqszvftbrmjlhg";
-        assert_eq!(6, part_one(stream));
-
-        stream = "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg";
-        assert_eq!(10, part_one(stream));
-
-        stream = "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw";
-        assert_eq!(11, part_one(stream));
+    #[rstest]
+    #[case("mjqjpqmgbljsphdztnvjfqwrcgsmlb", 7)]
+    #[case("bvwbjplbgvbhsrlpgdmjqwftvncz", 5)]
+    #[case("nppdvjthqldpwncqszvftbrmjlhg", 6)]
+    #[case("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", 10)]
+    #[case("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 11)]
+    fn test_part_one(#[case] input: &str, #[case] expected: usize) {
+        assert_eq!(expected, part_one(input));
     }
 
-    #[test]
-    fn test_part_two() {
-        let mut stream = "mjqjpqmgbljsphdztnvjfqwrcgsmlb";
-        assert_eq!(19, part_two(stream));
-
-        stream = "bvwbjplbgvbhsrlpgdmjqwftvncz";
-        assert_eq!(23, part_two(stream));
-
-        stream = "nppdvjthqldpwncqszvftbrmjlhg";
-        assert_eq!(23, part_two(stream));
-
-        stream = "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg";
-        assert_eq!(29, part_two(stream));
-
-        stream = "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw";
-        assert_eq!(26, part_two(stream));
+    #[rstest]
+    #[case("mjqjpqmgbljsphdztnvjfqwrcgsmlb", 19)]
+    #[case("bvwbjplbgvbhsrlpgdmjqwftvncz", 23)]
+    #[case("nppdvjthqldpwncqszvftbrmjlhg", 23)]
+    #[case("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", 29)]
+    #[case("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 26)]
+    fn test_part_two(#[case] input: &str, #[case] expected: usize) {
+        assert_eq!(expected, part_two(input));
     }
 }
