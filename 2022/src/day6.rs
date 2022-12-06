@@ -1,5 +1,4 @@
 use aoc2022::timing;
-use rstest::rstest;
 
 fn find_packet(bytes: &[u8], marker_size: usize) -> usize {
     bytes
@@ -36,6 +35,7 @@ pub fn run() {
 #[cfg(test)]
 mod test {
     use super::*;
+    use rstest::rstest;
 
     #[rstest]
     #[case("mjqjpqmgbljsphdztnvjfqwrcgsmlb", 7)]
