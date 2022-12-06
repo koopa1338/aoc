@@ -1,5 +1,3 @@
-use std::collections::HashSet;
-
 use aoc2022::timing;
 
 fn part_one(input: &str) -> usize {
@@ -7,7 +5,14 @@ fn part_one(input: &str) -> usize {
         .as_bytes()
         .windows(4)
         .enumerate()
-        .find(|(_, window)| window.iter().collect::<HashSet<_>>().len() == 4)
+        .find(|(_, window)| {
+            // this is one order of magnitued slower ...
+            // window.iter().collect::<HashSet<_>>().len() == 4
+            let mut values = window.to_vec();
+            values.sort_unstable();
+            values.dedup();
+            values.len() == 4
+        })
         .map(|(marker_idx, _)| marker_idx + 4)
         .expect("no solution found")
 }
@@ -17,7 +22,14 @@ fn part_two(input: &str) -> usize {
         .as_bytes()
         .windows(14)
         .enumerate()
-        .find(|(_, window)| window.iter().collect::<HashSet<_>>().len() == 14)
+        .find(|(_, window)| {
+            // this is one order of magnitued slower...
+            // window.iter().collect::<HashSet<_>>().len() == 14
+            let mut values = window.to_vec();
+            values.sort_unstable();
+            values.dedup();
+            values.len() == 14
+        })
         .map(|(marker_idx, _)| marker_idx + 14)
         .expect("no solution found")
 }
