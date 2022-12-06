@@ -21,17 +21,13 @@ impl From<&str> for Crates {
         let dim = crates_iter.next().unwrap().split_whitespace().count();
 
         let mut stacks = vec![Vec::new(); dim as usize];
-        crates_iter.for_each(|line| {
-            line.chars()
-                .skip(1)
-                .step_by(4)
-                .enumerate()
-                .for_each(|(idx, c)| {
-                    if !c.is_whitespace() {
-                        stacks[idx].push(c);
-                    }
-                });
-        });
+        for line in crates_iter {
+            for (idx, character) in line.chars().skip(1).step_by(4).enumerate() {
+                if !character.is_whitespace() {
+                    stacks[idx].push(character);
+                }
+            }
+        }
 
         Self { stacks }
     }
