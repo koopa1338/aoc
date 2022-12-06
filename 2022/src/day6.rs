@@ -1,9 +1,8 @@
 use aoc2022::timing;
 
-fn part_one(input: &str) -> usize {
-    input
-        .as_bytes()
-        .windows(4)
+fn find_packet(bytes: &[u8], marker_size: usize) -> usize {
+    bytes
+        .windows(marker_size)
         .enumerate()
         .find(|(_, window)| {
             // this is one order of magnitued slower ...
@@ -11,27 +10,18 @@ fn part_one(input: &str) -> usize {
             let mut values = window.to_vec();
             values.sort_unstable();
             values.dedup();
-            values.len() == 4
+            values.len() == marker_size
         })
-        .map(|(marker_idx, _)| marker_idx + 4)
+        .map(|(marker_idx, _)| marker_idx + marker_size)
         .expect("no solution found")
 }
 
+fn part_one(input: &str) -> usize {
+    find_packet(input.as_bytes(), 4)
+}
+
 fn part_two(input: &str) -> usize {
-    input
-        .as_bytes()
-        .windows(14)
-        .enumerate()
-        .find(|(_, window)| {
-            // this is one order of magnitued slower...
-            // window.iter().collect::<HashSet<_>>().len() == 14
-            let mut values = window.to_vec();
-            values.sort_unstable();
-            values.dedup();
-            values.len() == 14
-        })
-        .map(|(marker_idx, _)| marker_idx + 14)
-        .expect("no solution found")
+    find_packet(input.as_bytes(), 14)
 }
 
 pub fn run() {
