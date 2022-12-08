@@ -29,7 +29,7 @@ impl<'a> TreeGrid<'a> {
         self.trees[pos.0 + self.offset * pos.1]
     }
     fn is_visible(&self, pos: TreePosition) -> bool {
-        let tree_pos = self.tree_at((pos.0, pos.1));
+        let tree_pos = self.tree_at(pos);
         (0..pos.0).all(|x| self.tree_at((x, pos.1)) < tree_pos)
             || (pos.0 + 1..self.width).all(|x| self.tree_at((x, pos.1)) < tree_pos)
             || (0..pos.1).all(|y| self.tree_at((pos.0, y)) < tree_pos)
@@ -47,7 +47,7 @@ impl<'a> TreeGrid<'a> {
     }
 
     fn score_at(&self, pos: TreePosition) -> usize {
-        let tree_pos = self.tree_at((pos.0, pos.1));
+        let tree_pos = self.tree_at(pos);
         let left = pos.0
             - (0..pos.0)
                 .rev()
