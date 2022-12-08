@@ -1,3 +1,5 @@
+use std::ops::Index;
+
 use aoc2022::timing;
 
 struct TreeGrid<'a> {
@@ -24,16 +26,24 @@ impl<'a> From<&'a str> for TreeGrid<'a> {
     }
 }
 
+impl<'a> Index<TreePosition> for TreeGrid<'a> {
+    type Output = u8;
+
+    fn index(&self, index: TreePosition) -> &Self::Output {
+        &self.trees[index.0 + self.offset * index.1]
+    }
+}
+
 impl<'a> TreeGrid<'a> {
     fn tree_at(&self, pos: TreePosition) -> u8 {
         self.trees[pos.0 + self.offset * pos.1]
     }
     fn is_visible(&self, pos: TreePosition) -> bool {
         let tree_pos = self.tree_at(pos);
-        (0..pos.0).all(|x| self.tree_at((x, pos.1)) < tree_pos)
-            || (pos.0 + 1..self.width).all(|x| self.tree_at((x, pos.1)) < tree_pos)
-            || (0..pos.1).all(|y| self.tree_at((pos.0, y)) < tree_pos)
-            || (pos.1 + 1..self.height).all(|y| self.tree_at((pos.0, y)) < tree_pos)
+        (0..pos.0).all(|x| self[(x, pos.1)] < tree_pos)
+            || (pos.0 + 1..self.width).all(|x| self[(x, pos.1)] < tree_pos)
+            || (0..pos.1).all(|y| self[(pos.0, y)] < tree_pos)
+            || (pos.1 + 1..self.height).all(|y| self[(pos.0, y)] < tree_pos)
     }
 
     fn visible_trees(&self) -> usize {
@@ -47,23 +57,23 @@ impl<'a> TreeGrid<'a> {
     }
 
     fn score_at(&self, pos: TreePosition) -> usize {
-        let tree_pos = self.tree_at(pos);
+        let tree_pos = self[pos];
         let left = pos.0
             - (0..pos.0)
                 .rev()
-                .find(|&x| self.tree_at((x, pos.1)) >= tree_pos)
+                .find(|&x| self[(x, pos.1)] >= tree_pos)
                 .unwrap_or(0);
         let right = (pos.0 + 1..self.width)
-            .find(|&x| self.tree_at((x, pos.1)) >= tree_pos)
+            .find(|&x| self[(x, pos.1)] >= tree_pos)
             .unwrap_or(self.width - 1)
             - pos.0;
         let top = pos.1
             - (0..pos.1)
                 .rev()
-                .find(|&y| self.tree_at((pos.0, y)) >= tree_pos)
+                .find(|&y| self[(pos.0, y)] >= tree_pos)
                 .unwrap_or(0);
         let bottom = (pos.1 + 1..self.height)
-            .find(|&y| self.tree_at((pos.0, y)) >= tree_pos)
+            .find(|&y| self[(pos.0, y)] >= tree_pos)
             .unwrap_or(self.height - 1)
             - pos.1;
 
