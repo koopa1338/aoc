@@ -7,6 +7,6 @@ where
     let now = std::time::Instant::now();
     println!("\tSolution: {}", fun());
     println!("\t{}", "-".repeat(20));
-    println!("\tTiming: {}s", now.elapsed().as_secs_f64());
+    println!("\tTiming: {}ms", now.elapsed().as_secs_f64() * 1000f64);
     println!();
 }
