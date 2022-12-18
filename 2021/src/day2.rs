@@ -1,3 +1,5 @@
+use aoc2021::timing;
+
 use std::{
     ops::Mul,
     str::{FromStr, Lines},
@@ -41,7 +43,7 @@ fn parse_input(input: Lines) -> Vec<Command> {
         .collect::<Vec<Command>>()
 }
 
-fn part1(data: Vec<Command>) -> (i32, i32) {
+fn part1(data: Vec<Command>) -> i32 {
     let (horizontal, vertical): (Vec<Command>, Vec<Command>) =
         data.iter().partition(|command| match command.cmd {
             Instruction::Forward => true,
@@ -49,9 +51,9 @@ fn part1(data: Vec<Command>) -> (i32, i32) {
             Instruction::Up => false,
         });
 
-    let horizontal_pos = horizontal.iter().map(|command| command.value).sum();
+    let horizontal_pos: i32 = horizontal.iter().map(|command| command.value).sum();
 
-    let vertical_pos = vertical
+    let vertical_pos: i32 = vertical
         .iter()
         .map(|command| match command.cmd {
             Instruction::Up => command.value.saturating_neg(),
@@ -59,10 +61,10 @@ fn part1(data: Vec<Command>) -> (i32, i32) {
         })
         .sum();
 
-    (horizontal_pos, vertical_pos)
+    horizontal_pos.mul(vertical_pos)
 }
 
-fn part2(data: Vec<Command>) -> (i32, i32) {
+fn part2(data: Vec<Command>) -> i32 {
     let (mut h, mut d, mut a) = (0, 0, 0);
     for command in data.iter() {
         match command.cmd {
@@ -74,29 +76,15 @@ fn part2(data: Vec<Command>) -> (i32, i32) {
             Instruction::Up => a -= command.value,
         }
     }
-    (h, d)
+    h.mul(d)
 }
 
 pub fn run() {
     let input: Vec<Command> = parse_input(include_str!("../input/day2/input.txt").lines());
 
-    let (horizontal_pos, depth) = part1(input.clone());
-
     println!("DAY 2:");
-    println!("Part 1:");
-    println!(
-        "horizontal position x depth = {}",
-        horizontal_pos.mul(depth)
-    );
-    println!("Part 2:");
-
-    let (horizontal_pos2, depth2) = part2(input);
-
-    println!(
-        "horizontal position x depth = {}",
-        horizontal_pos2.mul(depth2)
-    );
-    println!("");
+    timing(|| part1(input.clone()), 1);
+    timing(|| part2(input), 2);
 }
 
 #[cfg(test)]
@@ -118,9 +106,7 @@ mod tests {
         let input = "forward 5\ndown 5\nforward 8\nup 3\ndown 8\nforward 2";
         let parsed = parse_input(input.lines());
 
-        let (horiz, depth) = part1(parsed);
-
-        assert_eq!(horiz.mul(depth), 150);
+        assert_eq!(150, part1(parsed));
     }
 
     #[test]
@@ -128,8 +114,6 @@ mod tests {
         let input = "forward 5\ndown 5\nforward 8\nup 3\ndown 8\nforward 2";
         let parsed = parse_input(input.lines());
 
-        let (horiz, depth) = part2(parsed);
-
-        assert_eq!(horiz.mul(depth), 900);
+        assert_eq!(900, part2(parsed));
     }
 }

@@ -1,3 +1,4 @@
+use aoc2021::timing;
 use std::collections::VecDeque;
 
 #[derive(Debug, Clone)]
@@ -141,17 +142,11 @@ fn part_two(game_numbers: &[u8], boards: &mut Vec<Bingoboard>) -> Result<u64, St
 }
 
 pub fn run() {
-    let (game_numbers, mut bingoboards) = parse_input(include_str!("../input/day4/input.txt"));
+    let (game_numbers, bingoboards) = parse_input(include_str!("../input/day4/input.txt"));
 
     println!("DAY 4:");
-    println!("Part 1:");
-    let score = part_one(&game_numbers, &mut bingoboards.clone());
-    println!("Score of the winner board:\n{}", score.unwrap());
-
-    println!("Part 2:");
-    let score_two = part_two(&game_numbers, &mut bingoboards);
-    println!("Score of the last winner board:\n{}", score_two.unwrap());
-    println!("");
+    timing(|| part_one(&game_numbers, &mut bingoboards.clone()).unwrap(), 1);
+    timing(|| part_two(&game_numbers, &mut bingoboards.clone()).unwrap(), 2);
 }
 
 #[cfg(test)]

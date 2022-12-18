@@ -1,3 +1,5 @@
+use aoc2021::timing;
+
 fn part1(input: Vec<usize>) -> usize {
     input
         .windows(2)
@@ -20,19 +22,13 @@ pub fn run() {
         .collect::<Vec<usize>>();
 
     println!("DAY 1:");
-    println!("Part 1:");
-    println!("depth increased {}", part1(input.clone()));
-
-    input.clear();
+    timing(|| part1(input), 1);
 
     input = include_str!("../input/day1/part2.txt")
         .lines()
         .map(|line| line.parse::<usize>().unwrap())
         .collect::<Vec<usize>>();
-
-    println!("Part 2:");
-    println!("measure of three increased {}", part2(input));
-    println!("");
+    timing(|| part2(input), 2);
 }
 
 #[cfg(test)]

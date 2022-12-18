@@ -1,3 +1,4 @@
+use aoc2021::timing;
 use itertools::Either;
 
 #[derive(Debug, Clone)]
@@ -120,15 +121,8 @@ pub fn run() {
     let lines = parse_input(include_str!("../input/day5/input.txt")).unwrap();
 
     println!("DAY 5:");
-    println!("Part 1:");
-    println!(
-        "Number of dangerous areas: {}",
-        part_one(lines.clone()).unwrap()
-    );
-
-    println!("Part 2:");
-    println!("Number of dangerous areas: {}", part_two(lines).unwrap());
-    println!("");
+    timing(|| part_one(lines.clone()).unwrap(), 1);
+    timing(|| part_two(lines).unwrap(), 2);
 }
 
 #[cfg(test)]

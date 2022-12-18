@@ -1,3 +1,5 @@
+use aoc2021::timing;
+
 fn parse_input(input: &str) -> Vec<Vec<u32>> {
     input
         .lines()
@@ -100,23 +102,22 @@ fn convert_bits_to_usize(bits: Vec<u32>) -> usize {
     .unwrap()
 }
 
+fn part_one(input: Vec<Vec<u32>>) -> usize {
+    let (gamma, epsilon) = decode_part_one(input);
+    gamma * epsilon
+}
+
+fn part_two(input: Vec<Vec<u32>>) -> usize {
+    let (oxygen, carbon) = decode_part_two(input);
+    oxygen * carbon
+}
+
 pub fn run() {
     let input: Vec<Vec<u32>> = parse_input(include_str!("../input/day3/input.txt"));
 
     println!("DAY 3:");
-    println!("Part 1:");
-    let (gamma, epsilon) = decode_part_one(input.clone());
-    let power_comsumption = gamma * epsilon;
-    println!(
-        "gamma: {}; epsilon: {}; power comsumption: {}",
-        gamma, epsilon, power_comsumption
-    );
-
-    println!("Part 2:");
-    let (oxygen, carbon) = decode_part_two(input);
-    println!("oxygen: {}; carbon: {}", oxygen, carbon);
-    println!("life support: {}", oxygen * carbon);
-    println!("");
+    timing(|| part_one(input.clone()), 1);
+    timing(|| part_two(input), 2);
 }
 
 #[cfg(test)]

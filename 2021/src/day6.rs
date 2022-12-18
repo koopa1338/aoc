@@ -1,3 +1,5 @@
+use aoc2021::timing;
+
 #[derive(Clone, Copy, Debug)]
 struct Lanternfish {
     timer: u8,
@@ -50,24 +52,9 @@ fn part_two(fishes: &mut Vec<Lanternfish>, iterations: usize) -> u128 {
 
 pub fn run() {
     let mut fishes = parse_input(include_str!("../input/day6/input.txt"));
-    let mut fishes_part_two = fishes.clone();
-    let mut iterations = 80;
     println!("DAY 6:");
-    println!("Part 1:");
-    println!(
-        "fishes after {} iterations: {}",
-        iterations,
-        part_one(&mut fishes, iterations)
-    );
-
-    iterations = 256;
-    println!("Part 2:");
-    println!(
-        "fishes after {} iterations: {}",
-        iterations,
-        part_two(&mut fishes_part_two, iterations)
-    );
-    println!("");
+    timing(|| part_one(&mut fishes.clone(), 80), 1);
+    timing(|| part_two(&mut fishes, 256), 1);
 }
 
 #[cfg(test)]
