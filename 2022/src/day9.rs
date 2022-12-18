@@ -1,18 +1,17 @@
 use aoc2022::timing;
 use std::collections::HashSet;
 
-struct Move {
+struct Move<const N: usize> {
     distance_x: i32,
     distance_y: i32,
     length: usize,
 }
 
-impl Move {
+impl<const N: usize> Move<N> {
     fn simulating_rope(
         &self,
         visited: &mut HashSet<(i32, i32)>,
         rope: &mut Vec<(i32, i32)>,
-        follow: usize,
     ) {
         for _ in 0..self.length {
             rope[0] = (rope[0].0 + self.distance_x, rope[0].1 + self.distance_y);
@@ -23,12 +22,12 @@ impl Move {
                     rope[i].1 += dy.signum();
                 }
             }
-            visited.insert(rope[follow]);
+            visited.insert(rope[N]);
         }
     }
 }
 
-impl From<&str> for Move {
+impl<const N: usize> From<&str> for Move<N> {
     fn from(value: &str) -> Self {
         let (a, b) = value.split_once(' ').unwrap();
         let (distance_x, distance_y) = match a.as_bytes()[0] as char {
@@ -46,28 +45,26 @@ impl From<&str> for Move {
     }
 }
 
-fn get_moves(input: &str) -> Vec<Move> {
+fn get_moves<const N: usize>(input: &str) -> Vec<Move<N>> {
     input.lines().map(Into::into).collect()
 }
 
 fn part_one(input: &str) -> usize {
-    let moves = get_moves(input);
-    let follow = 1;
-    let mut rope = vec![(0i32, 0i32); follow + 1];
+    let moves = get_moves::<1>(input);
+    let mut rope = vec![(0i32, 0i32); 2];
     let mut visited = HashSet::with_capacity(10000);
     for m in moves {
-        m.simulating_rope(&mut visited, &mut rope, follow);
+        m.simulating_rope(&mut visited, &mut rope);
     }
     visited.len()
 }
 
 fn part_two(input: &str) -> usize {
-    let moves = get_moves(input);
-    let follow = 9;
-    let mut rope = vec![(0i32, 0i32); follow + 1];
+    let moves = get_moves::<9>(input);
+    let mut rope = vec![(0i32, 0i32); 10];
     let mut visited = HashSet::with_capacity(10000);
     for m in moves {
-        m.simulating_rope(&mut visited, &mut rope, follow);
+        m.simulating_rope(&mut visited, &mut rope);
     }
     visited.len()
 }
