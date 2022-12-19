@@ -1,4 +1,4 @@
-use aoc2021::timing;
+use aoc2021::stats;
 
 fn parse_input(input: &str) -> Vec<i32> {
     input
@@ -42,8 +42,8 @@ pub fn run() {
     let input = include_str!("../input/day7/input.txt");
     let data = parse_input(input);
     println!("DAY 7:");
-    timing(|| part_one(data.clone()), 1);
-    timing(|| part_two(data), 2);
+    stats(|| part_one(data.clone()), 1);
+    stats(|| part_two(data), 2);
 }
 
 #[cfg(test)]

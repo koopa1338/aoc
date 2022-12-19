@@ -1,4 +1,4 @@
-use aoc2022::timing;
+use aoc2022::stats;
 
 fn find_packet(bytes: &[u8], marker_size: usize) -> usize {
     bytes
@@ -28,8 +28,8 @@ pub fn run() {
     let input = include_str!("../input/day6/input.txt");
 
     println!("DAY 6:");
-    timing(|| part_one(input), 1);
-    timing(|| part_two(input), 2);
+    stats(|| part_one(input), 1);
+    stats(|| part_two(input), 2);
 }
 
 #[cfg(test)]

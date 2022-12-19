@@ -1,4 +1,4 @@
-use aoc2021::timing;
+use aoc2021::stats;
 
 fn part1(input: Vec<usize>) -> usize {
     input
@@ -22,13 +22,13 @@ pub fn run() {
         .collect::<Vec<usize>>();
 
     println!("DAY 1:");
-    timing(|| part1(input), 1);
+    stats(|| part1(input), 1);
 
     input = include_str!("../input/day1/part2.txt")
         .lines()
         .map(|line| line.parse::<usize>().unwrap())
         .collect::<Vec<usize>>();
-    timing(|| part2(input), 2);
+    stats(|| part2(input), 2);
 }
 
 #[cfg(test)]

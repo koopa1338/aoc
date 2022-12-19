@@ -1,4 +1,4 @@
-use aoc2021::timing;
+use aoc2021::stats;
 use std::collections::VecDeque;
 
 #[derive(Debug, Clone)]
@@ -145,8 +145,8 @@ pub fn run() {
     let (game_numbers, bingoboards) = parse_input(include_str!("../input/day4/input.txt"));
 
     println!("DAY 4:");
-    timing(|| part_one(&game_numbers, &mut bingoboards.clone()).unwrap(), 1);
-    timing(|| part_two(&game_numbers, &mut bingoboards.clone()).unwrap(), 2);
+    stats(|| part_one(&game_numbers, &mut bingoboards.clone()).unwrap(), 1);
+    stats(|| part_two(&game_numbers, &mut bingoboards.clone()).unwrap(), 2);
 }
 
 #[cfg(test)]

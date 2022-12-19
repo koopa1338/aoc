@@ -1,4 +1,4 @@
-use aoc2021::timing;
+use aoc2021::stats;
 
 fn parse_input(input: &str) -> Vec<Vec<u32>> {
     input
@@ -116,8 +116,8 @@ pub fn run() {
     let input: Vec<Vec<u32>> = parse_input(include_str!("../input/day3/input.txt"));
 
     println!("DAY 3:");
-    timing(|| part_one(input.clone()), 1);
-    timing(|| part_two(input), 2);
+    stats(|| part_one(input.clone()), 1);
+    stats(|| part_two(input), 2);
 }
 
 #[cfg(test)]

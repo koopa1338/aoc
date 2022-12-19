@@ -1,4 +1,4 @@
-use aoc2021::timing;
+use aoc2021::stats;
 
 use std::{
     ops::Mul,
@@ -83,8 +83,8 @@ pub fn run() {
     let input: Vec<Command> = parse_input(include_str!("../input/day2/input.txt").lines());
 
     println!("DAY 2:");
-    timing(|| part1(input.clone()), 1);
-    timing(|| part2(input), 2);
+    stats(|| part1(input.clone()), 1);
+    stats(|| part2(input), 2);
 }
 
 #[cfg(test)]
