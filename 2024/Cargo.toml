@@ -1,0 +1,10 @@
+[package]
+name = "aoc2024"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+stats_alloc = "0.1"
+
+[dev-dependencies]
+rstest = "0.23"
